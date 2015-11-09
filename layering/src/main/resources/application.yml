@@ -1,8 +1,9 @@
 spring:
   datasource:
     driverClassName: org.h2.Driver
-    url: jdbc:h2:file:/tmp/testdb
+    url: jdbc:h2:file:/tmp/customer # (1)
     username: sa
-    password: 
-    
-spring.thymeleaf.cache: false
+    password:
+  jpa:
+    hibernate.ddl-auto: validate # (2)
+  thymeleaf.cache: false
