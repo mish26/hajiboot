@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <head>
     <meta charset="UTF-8" />
     <title>顧客一覧</title>
@@ -9,6 +9,11 @@
   <body>
     <div class="container">
       <h1>顧客管理システム</h1>
+      
+      <p>
+      	<span sec:authentication="principal.user.username">duke</span>さんログイン中。
+      	<a th:href="@{/logout}" class="btn btn-default btn-xs">ログアウト</a>
+      </p>
       
       <div class="col-sm-12">
         <form th:action="@{/customers/create}" th:object="${customerForm}" class="form-horizontal" method="post">
@@ -45,13 +50,14 @@
             <th>ID</th>
             <th>姓</th>
             <th>名</th>
-            <th colspan="2">編集</th>
+            <th colspan="3">編集</th>
           </tr>
       
           <tr th:each="customer : ${customers}">
             <td th:text="${customer.id}">100</td>
             <td th:text="${customer.lastName}">山田</td>
             <td th:text="${customer.firstName}">太郎</td>
+            <td th:text="${customer.user.username}">duke</td>
             <td>
               <form th:action="@{/customers/edit}" method="get">
                 <input class="btn btn-default" type="submit" name="form" value="編集" />
