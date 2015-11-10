@@ -1,54 +1,25 @@
-function validate() {
-
-	var username = document.getElementById("username").value;
-	var password = document.getElementById("password").value;
-
-	if (inputCheck(username) == 0 && inputCheck(password) == 0) {
-		return true;
-		exit;
-	}
-
-	var errDiv = document.getElementById('errDiv');
-	
-	if (inputCheck(username) != 0) {
-		var nameErrDiv = document.createElement('div');
-		nameErrDiv.classList.add('alert');
-		nameErrDiv.classList.add('alert-danger');
-		errDiv.insertBefore(nameErrDiv, errDiv.firstChild);
+$(function() {
+	$("form").submit(
+			function() {
+				if ($("input[name='username']").val() == "") {
+					if ($("span").css("color") != "red") {
+						$("input[name='username']").css("border", "1px solod red").before("<span>ユーザー名を入力してください</span>");
+						$("span").css("color", "red");
+					}
+					return false;
+				}
+			})
+			
+			$("form").submit(
+			function() {
+				if ($("input[name='password']").val() == "") {
+					if ($("span").css("color") != "red") {
+						$("input[name='password']").css("border", "1px solod red").before("<span>パスワードを入力してください</span>");
+						$("span").css("color", "red");
+					}
+					return false;
+				}
+			})
 		
-		if (inputCheck(username) == 1) {
-			nameErrDiv.innerHTML = "ユーザー名を入力してください";
-		} else {
-			nameErrDiv.innerHTML = "ユーザー名は半角英数字で入力してください";
-		}
-	}
+});
 
-	if (inputCheck(password) != 0) {
-		var passErrDiv = document.createElement('div');
-		passErrDiv.classList.add('alert');
-		passErrDiv.classList.add('alert-danger');
-		errDiv.insertBefore(passErrDiv, errDiv.lastChild);
-		// 未入力
-		if (inputCheck(password) == 1) {
-			passErrDiv.innerHTML = "パスワードを入力してください";
-		} else {
-			passErrDiv.innerHTML = "パスワードは半角英数字で入力してください";
-		}
-
-		return false;
-	}
-}
-
-// 入力チェック
-function inputCheck(val) {
-	if (val == "" || val == null) {
-		return 1;
-
-		// 半角英数字以外の文字が存在する場合、エラー
-	} else if (val.match(/[^A-Za-z0-9]+/)) {
-		return 2;
-
-	} else {
-		return 0;
-	}
-}

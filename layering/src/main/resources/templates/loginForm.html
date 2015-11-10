@@ -7,6 +7,7 @@
           th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"
           th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/validate.js" th:src="@{/js/validate.js}"></script>
 </head>
 
@@ -25,7 +26,7 @@
         <div id="errDiv"></div>
         <input type="text" class="form-control navbar-btn" name="username" placeholder="Username" autofocus="autofocus" id="username" />
         <input type="password" class="form-control navbar-btn" name="password" placeholder="Password" id="password" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit" onClick="return validate()">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
 </div>
 </body>
