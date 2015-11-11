@@ -40,4 +40,7 @@ public class CustomerService {
     }
     
 
+    public Customer createAjax(Customer customer) {
+        return customerRepository.save(customer);
+    }
 }

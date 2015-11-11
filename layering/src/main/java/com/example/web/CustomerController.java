@@ -4,17 +4,21 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.domain.Customer;
+import com.example.domain.JsonData;
 import com.example.service.CustomerService;
 import com.example.service.LoginUserDetails;
 
@@ -39,8 +43,8 @@ public class CustomerController {
         return "customers/list";
     }
     
-    // 新規作成
-    @RequestMapping(value = "create", method = RequestMethod.POST)
+    // 通常の新規作成
+    @RequestMapping(value="/create",consumes=MediaType.APPLICATION_JSON_VALUE)
     String create(@Validated CustomerForm form, BindingResult result, Model model, @AuthenticationPrincipal LoginUserDetails userDetails) {
         // 入力チェックでエラーがある場合は、一覧画面に戻る
         if (result.hasErrors()) {
@@ -51,6 +55,19 @@ public class CustomerController {
         BeanUtils.copyProperties(form, customer);
         customerService.create(customer, userDetails.getUser());
         return "redirect:/customers";
+    }
+    
+    // Ajaxでの新規登録処理
+    @RequestMapping(value = "/ajax/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Customer ajaxCreate(@RequestBody JsonData jsonData, @AuthenticationPrincipal LoginUserDetails userDetails) {
+        // 新規作成処理
+        Customer customer = new Customer();
+        customer.setLastName(jsonData.getLastName());
+        customer.setFirstName(jsonData.getFirstName());
+        customer.setUser(userDetails.getUser());
+        customerService.createAjax(customer);
+        return customer;
     }
  
     // 編集
@@ -87,5 +104,4 @@ public class CustomerController {
     String goToTop() {
         return "redirect:/customers";
     }
-
 }
