@@ -44,7 +44,7 @@ public class CustomerController {
     }
     
     // 通常の新規作成
-    @RequestMapping(value="/create",consumes=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "create", method = RequestMethod.POST)
     String create(@Validated CustomerForm form, BindingResult result, Model model, @AuthenticationPrincipal LoginUserDetails userDetails) {
         // 入力チェックでエラーがある場合は、一覧画面に戻る
         if (result.hasErrors()) {
