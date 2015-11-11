@@ -99,6 +99,13 @@ public class CustomerController {
         return "redirect:/customers";
     }
     
+    // Ajaxで削除
+    @RequestMapping(value = "/ajax/delete", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    Integer ajaxDelete(@RequestBody JsonData jsonData) {
+        customerService.delete(jsonData.getId());
+        return jsonData.getId();
+    }
+    
     // 戻る
     @RequestMapping(value = "edit", params = "goToTop")
     String goToTop() {

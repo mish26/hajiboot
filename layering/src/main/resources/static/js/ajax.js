@@ -37,16 +37,15 @@ $(function() {
 				alert("エラーが発生しました:" + textStatus + ":\n" + errorThrown);
 			},
 			complete : function() {
+				// ボタンを有効に戻す
 				button.attr("disabled", false);
 			}
 		});
-	})
-	
+	});
 
-	
 });
 
-
+// リストに追加する行を作成
 function getRowData(data) {
 	var id = data.id;
 	var lastName = data.lastName;
