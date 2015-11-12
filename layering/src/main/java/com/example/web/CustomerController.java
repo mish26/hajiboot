@@ -22,6 +22,9 @@ import com.example.domain.JsonData;
 import com.example.service.CustomerService;
 import com.example.service.LoginUserDetails;
 
+/**
+ * 顧客情報を操作するコントローラー
+ */
 @Controller
 @RequestMapping("customers")
 public class CustomerController {
@@ -35,7 +38,10 @@ public class CustomerController {
         return new CustomerForm();
     }
     
-    // 一覧表示
+    /**
+     * 一覧表示メソッド
+     * @return 顧客一覧表示画面
+     */
     @RequestMapping(method = RequestMethod.GET)
     String list(Model model) {
         List<Customer> customers = customerService.findAll();
@@ -43,9 +49,16 @@ public class CustomerController {
         return "customers/list";
     }
     
-    // 通常の新規作成
+    /**
+     * 新規登録（Submit）メソッド
+     * @param form 入力値
+     * @param result Validate結果
+     * @param userDetails ユーザー情報
+     * @return 顧客一覧表示画面
+     */
     @RequestMapping(value = "create", method = RequestMethod.POST)
-    String create(@Validated CustomerForm form, BindingResult result, Model model, @AuthenticationPrincipal LoginUserDetails userDetails) {
+    String create(@Validated CustomerForm form, BindingResult result, Model model,
+                    @AuthenticationPrincipal LoginUserDetails userDetails) {
         // 入力チェックでエラーがある場合は、一覧画面に戻る
         if (result.hasErrors()) {
             return list(model);
@@ -57,10 +70,17 @@ public class CustomerController {
         return "redirect:/customers";
     }
     
-    // Ajaxでの新規登録処理
-    @RequestMapping(value = "/ajax/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * 非同期での新規登録処理
+     * @param jsonData 入力値
+     * @param userDetails ユーザー情報
+     * @return 登録した顧客情報
+     */
     @ResponseBody
-    public Customer ajaxCreate(@RequestBody JsonData jsonData, @AuthenticationPrincipal LoginUserDetails userDetails) {
+    @RequestMapping(value = "/ajax/create", method = RequestMethod.POST, 
+                    produces = MediaType.APPLICATION_JSON_VALUE) // JSON形式のデータを受け取るための設定
+    public Customer ajaxCreate(@RequestBody JsonData jsonData, 
+                                @AuthenticationPrincipal LoginUserDetails userDetails) {
         // 新規作成処理
         Customer customer = new Customer();
         customer.setLastName(jsonData.getLastName());
@@ -70,7 +90,12 @@ public class CustomerController {
         return customer;
     }
  
-    // 編集
+    /**
+     * 顧客情報編集画面遷移メソッド
+     * @param id 編集対象のID
+     * @param form 顧客情報
+     * @return 編集画面
+     */
     @RequestMapping(value = "edit", params = "form", method = RequestMethod.GET)
     String editForm(@RequestParam Integer id, CustomerForm form) {
         Customer customer = customerService.findOne(id);
@@ -78,13 +103,21 @@ public class CustomerController {
         return "customers/edit";
     }
     
-    // 更新
+    /**
+     * 顧客情報編集実行メソッド
+     * @param id 編集対象のID
+     * @param form 入力値
+     * @param result Validate結果
+     * @param userDetails ユーザー情報
+     * @return 一覧表示へリダイレクト（POST → REDIRECT → GET）
+     */
     @RequestMapping(value = "edit", method = RequestMethod.POST)
-    String edit(@RequestParam Integer id, @Validated CustomerForm form, BindingResult result, @AuthenticationPrincipal LoginUserDetails userDetails) {
+    String edit(@RequestParam Integer id, @Validated CustomerForm form, BindingResult result, 
+                @AuthenticationPrincipal LoginUserDetails userDetails) {
         if (result.hasErrors()) {
             return editForm(id, form);
         }
-        
+        // 更新処理
         Customer customer = new Customer();
         BeanUtils.copyProperties(form, customer);
         customer.setId(id);
@@ -92,14 +125,21 @@ public class CustomerController {
         return "redirect:/customers";
     }
     
-    // 削除
+    /**
+     * 削除メソッド
+     * @param id 削除対象のID
+     * @return 一覧表示へリダイレクト
+     */
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     String delete(@RequestParam Integer id) {
         customerService.delete(id);
         return "redirect:/customers";
     }
     
-    // 戻る
+    /**
+     * 一覧画面へ戻る
+     * @return 一覧表示へリダイレクト
+     */
     @RequestMapping(value = "edit", params = "goToTop")
     String goToTop() {
         return "redirect:/customers";

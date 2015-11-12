@@ -17,30 +17,31 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
     
+    // 全件取得
     public List<Customer> findAll() {
         return customerRepository.findAll();
     }
-    
+    // 1件取得
     public Customer findOne(Integer id) {
         return customerRepository.findOne(id);
     }
-    
+    // 新規登録
     public Customer create(Customer customer, User user) {
         customer.setUser(user);
         return customerRepository.save(customer);
     }
-    
+    // 非同期での新規登録
+    public Customer createAjax(Customer customer) {
+        return customerRepository.save(customer);
+    }
+    // 更新
     public Customer update(Customer customer, User user) {
         customer.setUser(user);
         return customerRepository.save(customer);
     }
-
+    // 削除
     public void delete(Integer id) {
         customerRepository.delete(id);
     }
     
-
-    public Customer createAjax(Customer customer) {
-        return customerRepository.save(customer);
-    }
 }

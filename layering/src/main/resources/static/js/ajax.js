@@ -28,8 +28,10 @@ $(function() {
 			contentType : 'application/json',
 			// 正常終了時
 			success : function(jsonData) {
-				// 最後の行に追加
+				// 登録したデータを最後の行に追加
 				$('#table').append(getRowData(jsonData, token));
+				// フォームをリセット
+				$('input[type="text"]').val("");
 				alert("新規ユーザーを登録しました");
 			},
 			// エラー時
