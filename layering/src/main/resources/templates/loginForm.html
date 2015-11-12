@@ -15,6 +15,7 @@
 	<script src="js/jquery.validationEngine.js" th:src="@{/js/jquery.validationEngine.js}"></script>
 	<script src="js/jquery.validationEngine-ja.js" th:src="@{/js/jquery.validationEngine-ja.js}"></script>
 	<link rel="stylesheet" href="js/validationEngine.jquery.css" th:src="@{/js/validationEngine.jquery.css}" />
+	<link rel="stylesheet" href="/css/style.css" th:src="@{/css/style.css}" />
 	
 	<script>
 		  $(function(){
@@ -24,21 +25,23 @@
 </head>
 
 <body>
-
 <div class="container">
-    <h1>顧客管理システム</h1>
-    
-    <form class="form-signin" method="post" th:action="@{/login}" id="form-login">
-        <h2 class="form-signin-heading">ログインフォーム</h2>
-
-		<div th:if="${param.error}" class="alert alert-danger">
+	<div class="login-container">
+            <div id="output"></div>
+            <div class="avatar"></div>
+            <div class="form-box">
+            <div th:if="${param.error}" class="alert alert-danger">
            	 <span th:text="#{err.login.message}">ユーザー名またはパスワードが正しくありません。</span>
+        	</div>
+                <form class="form-signin" method="post" th:action="@{/login}" id="form-login">
+                    <input type="text" class="form-control validate[required,custom[onlyLetterNumber]]" name="username" placeholder="Username" autofocus="autofocus" id="username" />
+                    <input type="password" class="form-control validate[required,custom[onlyLetterNumber]]" name="password" placeholder="Password" id="password" />
+                    <button class="btn btn-info btn-block login" type="submit">Login</button>
+                </form>
+            </div>
         </div>
         
-        <input type="text" class="form-control navbar-btn validate[required,custom[onlyLetterNumber]]" name="username" placeholder="Username" autofocus="autofocus" id="username" />
-        <input type="password" class="form-control navbar-btn validate[required,custom[onlyLetterNumber]]" name="password" placeholder="Password" id="password" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
 </div>
+
 </body>
 </html>

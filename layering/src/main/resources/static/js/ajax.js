@@ -29,8 +29,8 @@ $(function() {
 			// 正常終了時
 			success : function(jsonData) {
 				// 最後の行に追加
-				$('#table').append(getRowData(jsonData));
-				alert("新規ユーザーを要録しました");
+				$('#table').append(getRowData(jsonData, token));
+				alert("新規ユーザーを登録しました");
 			},
 			// エラー時
 			error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -46,12 +46,19 @@ $(function() {
 });
 
 // リストに追加する行を作成
-function getRowData(data) {
+function getRowData(data, token) {
 	var id = data.id;
 	var lastName = data.lastName;
 	var firstName = data.firstName;
 	var userName = data.user.username;
-	var buttonArea = '<td><form th:action="@{/customers/edit}" method="get"><input class="btn btn-default" type="submit" name="form" value="編集" /><input type="hidden" name="id" th:value="${customer.id}" /></form></td><td><form th:action="@{/customers/delete}" method="post"><input class="btn btn-danger" type="submit" name="form" value="削除" /><input type="hidden" name="id" th:value="${customer.id}" /></form></td>';
+	var buttonArea = '<td><ul class="nav nav-pills"><li><form action="http://localhost:8080/customers/edit" method="get">'
+				   + '<input class="btn btn-default" type="submit" name="form" value="編集" />'
+				   + '<input type="hidden" name="id" value="'+ id +'" /></form></li><li>'
+				   + '<form action="http://localhost:8080/customers/delete" method="post">'
+				   + '<button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>'
+				   + '<input type="hidden" name="id" value="'+ id +'" id="del-id" />'
+				   + '<input type="hidden" name="_csrf" value="'+ token +'" /></form></li></ul></td>';
+		
 	return '<tr><td>' + id + '</td><td>' + lastName + '</td><td>' + firstName
 			+ '</td><td>' + userName + '</td>' + buttonArea;
 }
