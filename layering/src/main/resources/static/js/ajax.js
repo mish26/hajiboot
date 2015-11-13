@@ -14,13 +14,24 @@ $(function() {
 		// 多重送信を防ぐため通信完了までボタンをdisableにする
 		var button = $(this);
 		button.attr("disabled", true);
-
+		
 		// 各フィールドから値を取得してJSONデータを作成
+		var lastName = $("#lastName").val();
+		var firstName = $("#firstName").val();
+
+		// 入力チェック
+		if (!checkInputVal(lastName) || !checkInputVal(firstName)) {
+			// ボタンを有効に戻す
+			button.attr("disabled", false);
+			return false;
+		}
+		
 		var data = {
-			lastName : $("#lastName").val(),
-			firstName : $("#firstName").val()
+			lastName : lastName,
+			firstName : firstName
 		};
 
+		// Ajax通信開始
 		$.ajax({
 			type : "POST",
 			url : "/customers/ajax/create",
@@ -46,6 +57,30 @@ $(function() {
 	});
 
 });
+
+// 入力チェック
+function checkInputVal(val) {
+	if (val == "") {
+		alert("必須項目が未入力です");
+		return false;
+	} else {
+		if (checkHalfAlphanumeric(val)) {
+			return true;
+		} else {
+			alert("半角英数字のみで入力してください");
+			return false;
+		}
+	}
+}
+
+// 入力値が半角英数字かどうかチェック
+function checkHalfAlphanumeric(val) {
+	if (val.match(/[^0-9A-Za-z]+/) == null) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 // リストに追加する行を作成
 function getRowData(data, token) {

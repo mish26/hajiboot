@@ -63,6 +63,7 @@ public class CustomerController {
         if (result.hasErrors()) {
             return list(model);
         }
+        
         // 新規作成処理
         Customer customer = new Customer();
         BeanUtils.copyProperties(form, customer);
@@ -117,6 +118,7 @@ public class CustomerController {
         if (result.hasErrors()) {
             return editForm(id, form);
         }
+        
         // 更新処理
         Customer customer = new Customer();
         BeanUtils.copyProperties(form, customer);
